@@ -226,3 +226,10 @@ body{
         display: none;
     }
   }
+
+@media (max-width: 600px) {
+     .movies{
+        width: 90%;
+        height: 600px;
+     }
+}
