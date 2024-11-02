@@ -2,7 +2,9 @@ let movie_input=document.querySelector(".input_movie")
 let search_movie=document.querySelector(".search-bar")
 let container=document.querySelector(".container")
 let target_year=document.querySelectorAll(".target_year")
-let watchlist_view=document.querySelector(".watchlist-btn")
+let watchlist_btn=document.querySelector(".watchlist-btn")
+let watchlist_view=document.querySelector(".watchlist-view")
+
 
 //fetch by search
 search_movie.addEventListener("submit",(e)=>{
@@ -31,7 +33,7 @@ search_movie.addEventListener("submit",(e)=>{
               <p class="rating_year"><span><i class="fa-solid fa-star"></i> ${item.imdbRating || 'N/A'}</span><span>${item.Year}</span></p>
             </div>
             <div class="watchlist">
-              <button>+ Watch List</button>
+              <button class="add-watch">+ Watch List</button>
             </div>
         `
         container.appendChild(movies)
@@ -70,7 +72,7 @@ target_year.forEach((element)=>{
                 <p class="rating_year"><span><i class="fa-solid fa-star"></i> ${item.imdbRating || 'N/A'}</span><span>${item.Year}</span></p>
               </div>
               <div class="watchlist">
-                <button>+ Watch List</button>
+                <button class="add-watch">+ Watch List</button>
               </div>
           `
           container.appendChild(movies)
@@ -159,7 +161,7 @@ function InitialLoad(){
               <p class="rating_year"><span><i class="fa-solid fa-star"></i> ${data.imdbRating || 'N/A'}</span><span>${data.Year}</span></p>
             </div>
             <div class="watchlist">
-              <button>+ Watch List</button>
+              <button class="add-watch">+ Watch List</button>
             </div>
         `
         container.appendChild(movies)
@@ -171,15 +173,40 @@ function InitialLoad(){
 InitialLoad()
 
 //open watchlist
-watchlist_view.addEventListener("click",()=>{
-  let show=watchlist_view.parentElement.parentElement.nextElementSibling
+watchlist_btn.addEventListener("click",()=>{
+  let show=watchlist_btn.parentElement.parentElement.nextElementSibling
   show.style.right="0"
 }
 )
 
 //close watchlist
-let show=watchlist_view.parentElement.parentElement.nextElementSibling.firstElementChild.children[1]
+let show=watchlist_btn.parentElement.parentElement.nextElementSibling.firstElementChild.children[1]
 show.addEventListener("click",()=>{
-  let show=watchlist_view.parentElement.parentElement.nextElementSibling
+  let show=watchlist_btn.parentElement.parentElement.nextElementSibling
   show.style.right="-400px"
 })
+
+//add watchlist
+container.addEventListener("click", (event) => {
+  if (event.target.classList.contains("add-watch")) {
+      let add=event.target.closest(".movies").querySelector(".title")
+      let poster=add.parentElement.parentElement.children[1].firstElementChild.src
+      let title=add.parentElement.parentElement.children[2].firstElementChild.textContent
+      let year=add.parentElement.parentElement.children[2].children[1].children[1].textContent
+
+      let fav=document.createElement("article")
+      fav.className="fav"
+      fav.innerHTML=`
+      <div class="fav-profile">
+      <img height="100%" src="${poster}" width="100%" alt="">
+    </div>
+    <div class="fav-details">
+      <h4 class="fav-title">${title}</h4>
+      <p class="fav-year">${year}</p>
+      <i class="fa-solid fa-trash"></i>
+    </div>
+      `
+
+      watchlist_view.append(fav)
+  }
+});
