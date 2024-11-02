@@ -15,6 +15,7 @@ body{
     height: 100vh;
     background-color: white;
     overflow-x: hidden;
+    position: relative;
 }
 .navbar {
     width: 100%;
@@ -84,11 +85,21 @@ body{
     cursor: pointer;
 }
 
-.right-links {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    
+.right-links button{
+ padding: 6px;
+}
+
+.right-links button i{
+    font-size: 20px;
+    position: relative;
+}
+.right-links button span{
+    position: absolute;
+    color: black;
+    margin-left: 3px;
+    font-weight: 700;
+    font-size: 15px;
+    margin-top: -4px;
 }
 
 .pro {
@@ -96,7 +107,7 @@ body{
     font-weight: bold;
 }
 
-.watchlist-view{
+.watchlist-btn{
     border: none;
     color: white;
     cursor: pointer;
@@ -121,15 +132,54 @@ body{
     display: grid;
     grid-auto-flow: column;
     place-items: center;
+    
+}
+.filter-year p{
     cursor: pointer;
 }
-.filter-genre{
+.filter-year p:hover{
+   color: #d1d1d1;
+}
+/* .filter-genre{
     width: 100%;
     height: 100%;
     background-color: rgb(109, 109, 109);
     display: grid;
     grid-auto-flow: column;
     place-items: center;
+} */
+.watchlist-view{
+    width: 400px;
+    height: 610px;
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    right: -400px;
+    top: 0;
+    z-index: 1;
+    position: fixed;
+    transition: 0.5s;
+}
+.watchlist-view header{
+    width: 100%;
+    height: 10%;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px dashed black;
+}
+.watchlist-view header i{
+    font-size: 25px;
+    cursor: pointer;
+}
+.watchlist-view header h3{
+    font-size: 20px;
+    color: red;
+}
+.watchlist-view article{
+    width: 100%;
+    height: 90%;
 }
 .container{
     width: 100%;

@@ -1,10 +1,15 @@
 let movie_input=document.querySelector(".input_movie")
-let search_movie=document.querySelector(".search-button")
+let search_movie=document.querySelector(".search-bar")
 let container=document.querySelector(".container")
 let target_year=document.querySelectorAll(".target_year")
+let watchlist_view=document.querySelector(".watchlist-btn")
 
 //fetch by search
-search_movie.addEventListener("click",()=>{
+search_movie.addEventListener("submit",(e)=>{
+  e.preventDefault()
+  if(movie_input.value==''){
+    InitialLoad()
+  }else{
     container.innerHTML=''
   const apiKey = '9a4b3fa0';
   const searchTerm = movie_input.value;
@@ -13,7 +18,6 @@ search_movie.addEventListener("click",()=>{
    .then((data) => {
     if (data.Search) {
       data.Search.forEach((item) => {
-        console.log(item)
         let movies=document.createElement('div')
         movies.className="movies"
         
@@ -38,6 +42,7 @@ search_movie.addEventListener("click",()=>{
     }
   })
   .catch(error => console.error('Error:', error));
+  }
 })
   
 //fetch by year
@@ -79,6 +84,8 @@ target_year.forEach((element)=>{
   })
 
 //default movies when website loaded
+
+function InitialLoad(){
   const topHollywoodMovies = [
     { title: "The Shawshank Redemption", year: 1994, rating: 9.3 },
     { title: "The Godfather", year: 1972, rating: 9.2 },
@@ -132,33 +139,47 @@ target_year.forEach((element)=>{
     { title: "Joker", year: 2019, rating: 8.4 },
     { title: "The Departed", year: 2006, rating: 8.5 }
   ];
+  topHollywoodMovies.forEach((movie)=>{
+    container.innerHTML=''
+   const apiKey = '9a4b3fa0';
+   const year = movie.title;
+   
+  fetch(`https://www.omdbapi.com/?apikey=${apiKey}&t=${year}`)
+    .then(response => response.json())
+    .then((data) => {
+          let movies=document.createElement('div')
+        movies.className="movies"
+        movies.innerHTML=`
+        <div class="plus"><h3>+</h3></div>
+            <div class="poster">
+              <img width="100%" height="100%" src="${data.Poster}" alt="${data.Title}">
+            </div>
+            <div class="details">
+              <h3 class="title">${data.Title}</h3>
+              <p class="rating_year"><span><i class="fa-solid fa-star"></i> ${data.imdbRating || 'N/A'}</span><span>${data.Year}</span></p>
+            </div>
+            <div class="watchlist">
+              <button>+ Watch List</button>
+            </div>
+        `
+        container.appendChild(movies)
+    })
+    .catch(error => console.error('Error:', error));
+  })
+}
 
-document.addEventListener("DOMContentLoaded", (event) => {
-    topHollywoodMovies.forEach((movie)=>{
-      container.innerHTML=''
-     const apiKey = '9a4b3fa0';
-     const year = movie.title;
- 
-     fetch(`https://www.omdbapi.com/?apikey=${apiKey}&t=${year}`)
-       .then(response => response.json())
-       .then((data) => {
-             let movies=document.createElement('div')
-           movies.className="movies"
-           movies.innerHTML=`
-           <div class="plus"><h3>+</h3></div>
-               <div class="poster">
-                 <img width="100%" height="100%" src="${data.Poster}" alt="${data.Title}">
-               </div>
-               <div class="details">
-                 <h3 class="title">${data.Title}</h3>
-                 <p class="rating_year"><span><i class="fa-solid fa-star"></i> ${data.imdbRating || 'N/A'}</span><span>${data.Year}</span></p>
-               </div>
-               <div class="watchlist">
-                 <button>+ Watch List</button>
-               </div>
-           `
-           container.appendChild(movies)
-       })
-       .catch(error => console.error('Error:', error));
-   })
-  });
+InitialLoad()
+
+//open watchlist
+watchlist_view.addEventListener("click",()=>{
+  let show=watchlist_view.parentElement.parentElement.nextElementSibling
+  show.style.right="0"
+}
+)
+
+//close watchlist
+let show=watchlist_view.parentElement.parentElement.nextElementSibling.firstElementChild.children[1]
+show.addEventListener("click",()=>{
+  let show=watchlist_view.parentElement.parentElement.nextElementSibling
+  show.style.right="-400px"
+})
