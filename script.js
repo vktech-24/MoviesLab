@@ -40,10 +40,14 @@ search_movie.addEventListener("submit",(e)=>{
 
       });
     } else {
-      console.error('No results found');
+    let error=document.createElement('h4')
+    error.className="error"
+    error.style.color='red'
+    error.innerText="No search result";
+    container.append(error)
     }
   })
-  .catch(error => console.error('Error:', error));
+  .catch(error => console.log(error));
   }
 })
   
@@ -51,6 +55,7 @@ search_movie.addEventListener("submit",(e)=>{
 target_year.forEach((element)=>{
     element.addEventListener("click",()=>{
       container.innerHTML=''
+      movie_input.value=''
       const apiKey = '9a4b3fa0';
       const year = element.textContent;
     
@@ -203,10 +208,19 @@ container.addEventListener("click", (event) => {
     <div class="fav-details">
       <h4 class="fav-title">${title}</h4>
       <p class="fav-year">${year}</p>
-      <i class="fa-solid fa-trash"></i>
+      <i class="fa-solid fa-trash delete"></i>
     </div>
       `
-
       watchlist_view.append(fav)
   }
 });
+
+
+//delete watchlist
+
+watchlist_view.addEventListener("click",(event)=>{
+ if(event.target.classList.contains("delete")){
+  let remove = event.target.closest(".fav-details").querySelector(".delete")
+   remove.parentElement.parentElement.remove()
+ }
+})
